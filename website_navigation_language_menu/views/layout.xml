@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+	<data>
+		<template id="website_navigation_language_menu_layout" inherit_id="website.layout">
+			<xpath expr="//div[@id='wrapwrap']/header" position="replace">
+				<header>
+					<div class="navbar navbar-default navbar-static-top">
+					    <div class="container">
+						<div class="navbar-header">
+						    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-top-collapse">
+						        <span class="sr-only">Toggle navigation</span>
+						        <span class="icon-bar"/>
+						        <span class="icon-bar"/>
+						        <span class="icon-bar"/>
+						    </button>
+						    <a href="/" class="navbar-brand logo page-scroll">
+                <img src="/logo.png" width="180px" height="180px" style="max-height: 110px; margin-top: -28px; margin-left:-20px" t-att-alt="'Logo of %s' % res_company.name" t-att-title="res_company.name"/>
+            </a>
+						</div>
+						<div class="collapse navbar-collapse navbar-top-collapse">
+						    <ul class="nav navbar-nav navbar-right" id="top_menu">
+						        <t t-foreach="website.menu_id.child_id" t-as="submenu">
+						            <t t-call="website.submenu"/>
+						        </t>
+						        <li class="divider" t-ignore="true" t-if="website.user_id != user_id"/>
+						        <li class="dropdown" t-ignore="true" t-if="website.user_id != user_id">
+						            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						                <b>
+						                    <span t-esc="(len(user_id.name)&gt;25) and (user_id.name[:23]+'...') or user_id.name"/>
+						                    <span class="caret"/>
+						                </b>
+						            </a>
+						            <ul class="dropdown-menu js_usermenu" role="menu">
+						                <li id="o_logout"><a t-attf-href="/web/session/logout?redirect=/" role="menuitem">Logout</a></li>
+						            </ul>
+						        </li>
+							<!--
+							<li class="divider" t-ignore="true" t-if="website.user_id == user_id"/>
+							<li t-ignore="true" t-if="website.user_id == user_id"><a href="/web/login"><b>Sign In</b></a></li>
+							-->
+							
+							<li class="divider" groups="base.group_public"/>
+        <li groups="base.group_public">
+            <a t-attf-href="/web/login">
+                <b>Sign in</b>
+            </a>
+        </li>
+
+                                <t t-foreach="languages" t-as="lg">
+                                    <t t-if="lang!=lg[0]">
+                                        <li>
+                                        <a t-att-href="url_for(request.httprequest.path + '?' + keep_query(), lang=lg[0])" t-att-data-default-lang="(editable or translatable) and 'true' if website and lg[0] == website.default_lang_code else None" t-att-data-lang="lg[0]" class="js_change_lang" t-esc="lg[1].split('/').pop()" />
+                                        </li>
+                                    </t>
+                                </t>
+						    </ul>
+						</div>
+					    </div>
+					</div>
+				</header>
+			</xpath>
+		</template>
+	</data>
+</odoo>
